@@ -1,0 +1,33 @@
+{
+  "common": {
+    "dashboard": "Dashboard",
+    "disease": "Disease Detection",
+    "recommendation": "Crop Advisory",
+    "market": "Market Analysis",
+    "settings": "Settings",
+    "logout": "Logout",
+    "search": "Search analytics, crops, or markets...",
+    "welcome": "Welcome back, Farmer",
+    "region": "Punjab Region, IN",
+    "weatherAlert": "Weather Alert: Heavy Rain Expected"
+  },
+  "disease": {
+    "title": "Disease Detection",
+    "subtitle": "Upload a leaf photo to identify crop diseases using AI.",
+    "uploadText": "Click or drag image to this area",
+    "uploadHint": "Support for JPG, PNG. Please ensure the leaf is clearly visible.",
+    "guidelines": "Guidelines",
+    "analysisResult": "Analysis Result"
+  },
+  "crop": {
+    "title": "Crop Advisory",
+    "subtitle": "Enter soil and environmental parameters for precision recommendations.",
+    "analyze": "Analyze Soil",
+    "nitrogen": "Nitrogen (N)",
+    "phosphorus": "Phosphorus (P)",
+    "potassium": "Potassium (K)",
+    "ph": "Soil pH",
+    "temp": "Avg Temperature",
+    "rainfall": "Rainfall"
+  }
+}
