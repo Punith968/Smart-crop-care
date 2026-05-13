@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Farmer Crop Advisory</title>
+  <link rel="stylesheet" href="/static/styles.css?v=2" />
+</head>
+<body>
+  <div class="app-shell">
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode">
+      <span class="theme-toggle-icon" id="themeToggleIcon" aria-hidden="true">☾</span>
+      <span class="theme-toggle-text" id="themeToggleText">Dark mode</span>
+    </button>
+
+    <section class="auth-screen" id="authScreen">
+      <div class="auth-ambient auth-ambient-a"></div>
+      <div class="auth-ambient auth-ambient-b"></div>
+
+      <div class="auth-hero">
+        <div class="brand-mark">FCA</div>
+        <p class="eyebrow">Smart Crop Intelligence Suite</p>
+        <h1>Premium farm advisory views inspired by the reference layout, rebuilt for your live crop-care system.</h1>
+        <p class="hero-copy">
+          The experience keeps the split workspace feel from the reference `webapplcation` design:
+          structured farm inputs on the left, intelligence-rich outputs on the right, plus secure
+          report storage and disease diagnostics inside the same app shell.
+        </p>
+
+        <div class="hero-ribbon">
+          <span>Crop recommendation</span>
+          <span>Fertilizer strategy</span>
+          <span>Cost estimation</span>
+          <span>Disease diagnostics</span>
+        </div>
+
+        <div class="hero-stats">
+          <article>
+            <span>01</span>
+            <strong>Reference-style advisory inputs with richer interactions</strong>
+          </article>
+          <article>
+            <span>02</span>
+            <strong>Authenticated report vault with persistent downloads</strong>
+          </article>
+          <article>
+            <span>03</span>
+            <strong>Premium earth-tone UI with stronger dashboard storytelling</strong>
+          </article>
+        </div>
+      </div>
+
+      <div class="auth-panel">
+        <div class="auth-card active" id="loginCard">
+          <div class="card-head">
+            <p class="eyebrow">Secure Login</p>
+            <h2>Welcome back</h2>
+            <p>Use your credentials to reopen the advisory cockpit and stored report vault.</p>
+          </div>
+          <form id="loginForm" class="stack">
+            <label>
+              <span>Username</span>
+              <input name="username" type="text" placeholder="farmer" required />
+            </label>
+            <label>
+              <span>Password</span>
+              <input name="password" type="password" placeholder="farmer123" required />
+            </label>
+            <button type="submit" class="primary-button">Open dashboard</button>
+          </form>
+          <div class="credential-hint">
+            Demo credentials:
+            <strong>farmer / farmer123</strong>
+          </div>
+          <button type="button" class="switch-link" id="showRegister">
+            Need an account? Create one
+          </button>
+        </div>
+
+        <div class="auth-card" id="registerCard">
+          <div class="card-head">
+            <p class="eyebrow">New Account</p>
+            <h2>Create access</h2>
+            <p>Register a local account to keep reports, sessions, and stored advisory history separated per user.</p>
+          </div>
+          <form id="registerForm" class="stack">
+            <label>
+              <span>Full name</span>
+              <input name="full_name" type="text" placeholder="Farmer Demo" />
+            </label>
+            <label>
+              <span>Username</span>
+              <input name="username" type="text" placeholder="newfarmer" required />
+            </label>
+            <label>
+              <span>Password</span>
+              <input name="password" type="password" placeholder="minimum 6 characters" required />
+            </label>
+            <button type="submit" class="primary-button">Create account</button>
+          </form>
+          <button type="button" class="switch-link" id="showLogin">
+            Already registered? Sign in
+          </button>
+        </div>
+
+        <p class="status-banner" id="authStatus">Authentication ready.</p>
+      </div>
+    </section>
+
+    <section class="dashboard hidden" id="dashboard">
+      <div class="dashboard-ambient dashboard-ambient-a"></div>
+      <div class="dashboard-ambient dashboard-ambient-b"></div>
+
+      <header class="topbar">
+        <div class="topbar-brand">
+          <p class="eyebrow">Farmer Crop Advisory</p>
+          <h1>Operations cockpit</h1>
+        </div>
+
+        <nav class="nav-switches">
+          <button class="nav-chip active" data-view-target="advisoryView">Advisory Lab</button>
+          <button class="nav-chip" data-view-target="diseaseView">Disease Scan</button>
+          <button class="nav-chip" data-view-target="reportsView">Report Vault</button>
+        </nav>
+
+        <div class="topbar-meta">
+          <span class="meta-chip">Secure vault active</span>
+          <span class="meta-chip">Four core modules online</span>
+        </div>
+
+        <div class="topbar-user">
+          <div>
+            <strong id="userName">Farmer Demo</strong>
+            <span id="userHandle">@farmer</span>
+          </div>
+          <button class="ghost-button" id="logoutButton" type="button">Logout</button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <section class="workspace-view" id="advisoryView">
+          <div class="split-layout advisory-layout">
+            <aside class="control-panel advisory-panel">
+              <div class="panel-header">
+                <p class="eyebrow">Input Workspace</p>
+                <h2>Farm parameters</h2>
+                <p class="panel-copy">
+                  This follows the reference structure closely: farm inputs stay anchored on the left,
+                  while the right panel becomes a richer advisory command center.
+                </p>
+              </div>
+
+              <div class="panel-kpi-row">
+                <article>
+                  <span>Mode</span>
+                  <strong>Field calibration</strong>
+                </article>
+                <article>
+                  <span>Engine</span>
+                  <strong>ML assisted</strong>
+                </article>
+                <article>
+                  <span>Output</span>
+                  <strong>Report ready</strong>
+                </article>
+              </div>
+
+              <form id="advisoryForm" class="stack">
+                <section class="form-section">
+                  <div class="section-head">
+                    <p>Soil classification</p>
+                    <span>Choose the field profile closest to your land</span>
+                  </div>
+                  <div class="soil-chip-grid" id="soilChipGrid">
+                    <button type="button" class="soil-chip" data-soil="Sandy">
+                      <strong>Sandy</strong>
+                      <small>Fast draining</small>
+                    </button>
+                    <button type="button" class="soil-chip" data-soil="Loamy">
+                      <strong>Loamy</strong>
+                      <small>Balanced texture</small>
+                    </button>
+                    <button type="button" class="soil-chip" data-soil="Clayey">
+                      <strong>Clayey</strong>
+                      <small>High retention</small>
+                    </button>
+                    <button type="button" class="soil-chip" data-soil="Black">
+                      <strong>Black</strong>
+                      <small>Rich organic base</small>
+                    </button>
+                    <button type="button" class="soil-chip" data-soil="Red">
+                      <strong>Red</strong>
+                      <small>Mineral heavy</small>
+                    </button>
+                  </div>
+                  <label class="sr-only">
+                    <span>Soil type</span>
+                    <select id="soilTypeSelect" name="soil_type">
+                      <option>Sandy</option>
+                      <option>Loamy</option>
+                      <option>Clayey</option>
+                      <option>Black</option>
+                      <option>Red</option>
+                    </select>
+                  </label>
+                </section>
+
+                <section class="form-section">
+                  <div class="section-head">
+                    <p>Soil chemistry</p>
+                    <span>NPK values and pH balance</span>
+                  </div>
+                  <div class="field-grid three">
+                    <label><span>Nitrogen</span><input name="N" type="number" step="0.1" value="90" required /></label>
+                    <label><span>Phosphorus</span><input name="P" type="number" step="0.1" value="42" required /></label>
+                    <label><span>Potassium</span><input name="K" type="number" step="0.1" value="43" required /></label>
+                  </div>
+
+                  <div class="ph-panel">
+                    <div class="ph-display">
+                      <span>Hydrogen potential</span>
+                      <strong id="phDisplayValue">6.5</strong>
+                      <small id="phToneLabel">Balanced zone</small>
+                    </div>
+                    <input id="phSlider" class="range-input" type="range" min="4" max="10" step="0.1" value="6.5" />
+                    <input id="phInput" name="ph" type="hidden" value="6.5" />
+                    <div class="range-scale">
+                      <span>Acidic</span>
+                      <span>Neutral</span>
+                      <span>Alkaline</span>
+                    </div>
+                  </div>
+                </section>
+
+                <section class="form-section">
+                  <div class="section-head">
+                    <p>Field conditions</p>
+                    <span>Environmental inputs modeled from the reference layout</span>
+                  </div>
+                  <div class="field-grid two">
+                    <label><span>Temperature</span><input name="temperature" type="number" step="0.1" value="25" required /></label>
+                    <label><span>Humidity</span><input name="humidity" type="number" step="0.1" value="80" required /></label>
+                  </div>
+                  <div class="field-grid two">
+                    <label><span>Rainfall</span><input name="rainfall" type="number" step="0.1" value="200" required /></label>
+                    <label><span>Moisture</span><input name="moisture" type="number" step="0.1" value="38" required /></label>
+                  </div>
+                </section>
+
+                <section class="form-section">
+                  <div class="section-head">
+                    <p>Crop scale</p>
+                    <span>Land size for financial projection</span>
+                  </div>
+                  <div class="field-grid">
+                    <label><span>Acres</span><input name="acres" type="number" step="0.1" value="2.5" required /></label>
+                  </div>
+                </section>
+
+                <button class="primary-button" type="submit">Initiate recommendation</button>
+
+                <div class="dual-action">
+                  <button class="secondary-button" type="button" id="saveAdvisoryReport" disabled>Save advisory report</button>
+                  <button class="ghost-button" type="button" id="applySmartPreset">Apply smart preset</button>
+                </div>
+              </form>
+
+              <p class="status-banner" id="advisoryStatus">Waiting for field input.</p>
+            </aside>
+
+            <section class="results-panel advisory-results">
+              <div class="results-hero">
+                <div>
+                  <p class="eyebrow">Advisory Output</p>
+                  <h2 id="advisorySubline">Submit farm inputs to calculate crop fit, fertilizer strategy, and cost projection.</h2>
+                  <p class="hero-copy-inline">
+                    A premium advisory board will build itself here after the model run.
+                  </p>
+                </div>
+                <div class="hero-tools">
+                  <span class="meta-chip">Live advisory view</span>
+                  <button class="ghost-button" type="button" id="downloadLatestAdvisory" disabled>Download latest report</button>
+                </div>
+              </div>
+
+              <article class="hero-result-card">
+                <div class="hero-card-top">
+                  <div class="hero-card-copy">
+                    <p class="card-label">Top Recommended Crop</p>
+                    <h3 id="cropResult">Awaiting run</h3>
+                    <p id="advisoryHeadline">Model-backed crop matching will appear here once the advisory workspace is submitted.</p>
+                  </div>
+                  <div class="confidence-shell">
+                    <span>Model fit</span>
+                    <strong id="advisoryConfidence">--%</strong>
+                  </div>
+                </div>
+
+                <div class="hero-summary-band">
+                  <article>
+                    <span>Fertilizer pair</span>
+                    <strong id="fertilizerResult">Awaiting run</strong>
+                  </article>
+                  <article>
+                    <span>Expected profit</span>
+                    <strong id="profitResult">Rs. 0.00</strong>
+                  </article>
+                  <article>
+                    <span>Recommendation signal</span>
+                    <strong id="summaryResult">Standby</strong>
+                  </article>
+                </div>
+
+                <div class="alt-crop-row" id="altCropRow">
+                  <article class="alt-crop-card">
+                    <span>Alternative</span>
+                    <strong>Submit inputs</strong>
+                    <small>to unlock crop variants</small>
+                  </article>
+                </div>
+              </article>
+
+              <div class="insight-grid">
+                <article class="premium-card">
+                  <div class="section-head premium">
+                    <p>Application plan</p>
+                    <span>Suggested fertilizer deployment pattern</span>
+                  </div>
+                  <div class="plan-list" id="fertilizerPlanList">
+                    <article class="plan-item pending-plan">
+                      <strong>Advisory plan pending</strong>
+                      <small>Run the model to generate dosage guidance.</small>
+                    </article>
+                  </div>
+                </article>
+
+                <article class="premium-card finance-card">
+                  <div class="section-head premium">
+                    <p>Financial projection</p>
+                    <span>Cost and return profile</span>
+                  </div>
+                  <div class="finance-strip">
+                    <article>
+                      <span>Total cost</span>
+                      <strong id="financeCost">Rs. 0.00</strong>
+                    </article>
+                    <article>
+                      <span>Expected revenue</span>
+                      <strong id="financeRevenue">Rs. 0.00</strong>
+                    </article>
+                  </div>
+                  <div class="metric-band">
+                    <article>
+                      <span>Cost per acre</span>
+                      <strong id="costPerAcreValue">Rs. 0.00</strong>
+                    </article>
+                    <article>
+                      <span>ROI</span>
+                      <strong id="roiValue">0.0x</strong>
+                    </article>
+                    <article>
+                      <span>Margin</span>
+                      <strong id="profitMarginValue">0%</strong>
+                    </article>
+                  </div>
+                  <p class="inline-note" id="revenueResult">Revenue and cost estimates will appear here.</p>
+                </article>
+
+                <article class="premium-card">
+                  <div class="section-head premium">
+                    <p>Field readiness</p>
+                    <span>Signal score based on pH, climate, and cost outlook</span>
+                  </div>
+                  <div class="progress-shell">
+                    <div class="progress-fill" id="readinessFill"></div>
+                  </div>
+                  <div class="metric-band two">
+                    <article>
+                      <span>Readiness</span>
+                      <strong id="readinessValue">0%</strong>
+                    </article>
+                    <article>
+                      <span>Signal</span>
+                      <strong id="fieldSignalValue">Standby</strong>
+                    </article>
+                  </div>
+                  <p id="summaryExplanation">A concise advisory summary will appear after processing.</p>
+                </article>
+
+                <article class="premium-card">
+                  <div class="section-head premium">
+                    <p>Operational notes</p>
+                    <span>Actionable next steps distilled from the run</span>
+                  </div>
+                  <div class="note-list" id="insightList">
+                    <article class="note-item">
+                      <strong>Waiting for run</strong>
+                      <small>Submit field parameters to generate live notes.</small>
+                    </article>
+                  </div>
+                </article>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="workspace-view hidden" id="diseaseView">
+          <div class="split-layout disease-layout">
+            <aside class="control-panel disease-panel">
+              <div class="panel-header">
+                <p class="eyebrow">Diagnostic Intake</p>
+                <h2>Disease scan</h2>
+                <p class="panel-copy">
+                  The disease workspace keeps the reference upload-and-results pattern, but with richer
+                  treatment cards and a cleaner premium palette.
+                </p>
+              </div>
+
+              <form id="diseaseForm" class="stack">
+                <div class="image-preview premium" id="imagePreview">No image selected.</div>
+
+                <label class="upload-field">
+                  <span>Leaf image</span>
+                  <input name="image" type="file" accept="image/*" id="diseaseImageInput" />
+                </label>
+
+                <label><span>Crop name</span><input name="crop_name" type="text" value="tomato" required /></label>
+                
+                <button class="primary-button accent" type="submit">Analyze disease</button>
+
+                <div class="dual-action">
+                  <button class="secondary-button" type="button" id="saveDiseaseReport" disabled>Save diagnostic report</button>
+                  <button class="ghost-button" type="button" id="clearDiseaseInput">Clear intake</button>
+                </div>
+              </form>
+
+              <p class="status-banner" id="diseaseStatus">Upload is optional. Text symptoms are supported immediately.</p>
+            </aside>
+
+            <section class="results-panel disease-results">
+              <div class="results-hero">
+                <div>
+                  <p class="eyebrow">Diagnostic Output</p>
+                  <h2 id="diseaseHeadline">No diagnosis generated yet</h2>
+                  <p class="hero-copy-inline" id="diseaseSubline">Use symptoms now, and the image field will feed the ResNet50 pipeline when available.</p>
+                </div>
+                <div class="hero-tools">
+                  <span class="meta-chip" id="diseaseSource">Awaiting input</span>
+                  <button class="ghost-button" type="button" id="downloadLatestDisease" disabled>Download latest report</button>
+                </div>
+              </div>
+
+              <div class="diagnostic-grid">
+                <article class="diagnosis-hero-card">
+                  <div class="diagnosis-alert-bar">
+                    <span id="diseaseSeverity">Standby state</span>
+                    <span class="severity-badge" id="diseaseRiskText">No active scan</span>
+                  </div>
+                  <div class="diagnosis-body">
+                    <div>
+                      <p class="card-label">Likely disease</p>
+                      <h3 id="diseaseResult">Awaiting scan</h3>
+                      <p id="diseaseRecommendation">Recommendations will appear here after the diagnostic run.</p>
+                    </div>
+                    <div class="confidence-shell disease-shell">
+                      <span>Confidence</span>
+                      <strong id="diseaseConfidence">--</strong>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="premium-card">
+                  <div class="section-head premium">
+                    <p>Action plan</p>
+                    <span>Recommended remediation steps</span>
+                  </div>
+                  <div class="note-list" id="diseaseActionList">
+                    <article class="note-item">
+                      <strong>Waiting for evidence</strong>
+                      <small>Run a disease scan to build the treatment checklist.</small>
+                    </article>
+                  </div>
+                </article>
+
+                <article class="premium-card risk-card">
+                  <div class="section-head premium">
+                    <p>Risk score</p>
+                    <span>Operational severity signal</span>
+                  </div>
+                  <div class="risk-display">
+                    <strong id="diseaseRiskScore">0</strong>
+                    <span>/100</span>
+                  </div>
+                  <p class="inline-note" id="uploadedImageCaption">No image selected.</p>
+                </article>
+
+                <article class="premium-card">
+                  <div class="section-head premium">
+                    <p>Report readiness</p>
+                    <span>Diagnostic report storage and download status</span>
+                  </div>
+                  <div class="note-list">
+                    <article class="note-item">
+                      <strong>Vault integration enabled</strong>
+                      <small>Every saved disease run becomes a downloadable HTML report.</small>
+                    </article>
+                    <article class="note-item">
+                      <strong>Image path support enabled</strong>
+                      <small>Uploaded images are staged for future CNN-backed classification.</small>
+                    </article>
+                  </div>
+                </article>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="workspace-view hidden" id="reportsView">
+          <div class="reports-layout">
+            <aside class="vault-summary">
+              <p class="eyebrow">Storage Vault</p>
+              <h2>Saved reports</h2>
+              <p class="panel-copy">
+                Advisory and disease runs can be stored, reopened, and downloaded as polished HTML reports
+                directly from this vault.
+              </p>
+              <div class="summary-metrics">
+                <article>
+                  <span>Total reports</span>
+                  <strong id="reportCount">0</strong>
+                </article>
+                <article>
+                  <span>Storage used</span>
+                  <strong id="storageUsed">0 KB</strong>
+                </article>
+              </div>
+              <button class="secondary-button" type="button" id="refreshReports">Refresh vault</button>
+              <button class="ghost-button" type="button" id="downloadReportsBundle">Download all reports</button>
+
+              <article class="premium-card performance-chart-card">
+                <div class="section-head premium">
+                  <p>Performance analysis</p>
+                  <span>Model quality and latency graphs</span>
+                </div>
+                <div class="performance-chart-wrap" aria-label="Model quality line graph">
+                  <svg id="performanceChart" class="performance-chart" viewBox="0 0 640 280" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"></svg>
+                </div>
+                <div class="performance-chart-wrap performance-chart-gap" aria-label="Model latency bar graph">
+                  <svg id="latencyChart" class="performance-chart" viewBox="0 0 640 280" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"></svg>
+                </div>
+                <p class="inline-note">Download the full performance analysis as a standalone HTML or PDF file.</p>
+                <div class="dual-action">
+                  <button class="primary-button" type="button" id="downloadPerformanceChart">Download analysis</button>
+                  <button class="ghost-button" type="button" id="downloadPerformancePdf">Download PDF</button>
+                </div>
+              </article>
+            </aside>
+
+            <section class="report-list" id="reportList">
+              <article class="empty-state">
+                <h3>No reports stored yet</h3>
+                <p>Save an advisory or diagnostic result to build the report vault.</p>
+              </article>
+            </section>
+          </div>
+        </section>
+      </main>
+    </section>
+  </div>
+
+  <script src="/static/app.js?v=2"></script>
+</body>
+</html>

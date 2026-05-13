@@ -1,0 +1,52 @@
+# IDE and Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+
+# Generated/Cache
+*.pdf
+*.png
+*.jpg
+*.jpeg
+
+# Flutter
+.flutter-plugins
+.flutter-plugins-dependencies
+.dart_tool/
+build/
+
+# ML Models and Artifacts (Large Files)
+*.pth
+*.h5
+*.joblib
+models/
+app/artifacts/
+"disese dtection/best_model.pth"
+"disese dtection/checkpoints/"
+
+# Logs
+*.log
+flutter_run_log.txt
+flutter_verbose*.txt
+flutter_verbose_debug.txt
+
+# macOS
+.DS_Store
