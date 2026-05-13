@@ -10,18 +10,21 @@ import {
   MapPin,
   Calendar
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const { Title, Text } = Typography;
 
 const DashboardHome = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <Title level={2} className="!mb-0">Welcome back, Farmer</Title>
+          <Title level={2} className="!mb-0">{t('common.welcome')}</Title>
           <div className="flex items-center gap-2 text-slate-500 mt-1">
             <MapPin size={16} />
-            <Text type="secondary">Punjab Region, IN</Text>
+            <Text type="secondary">{t('common.region')}</Text>
             <span className="mx-1">•</span>
             <Calendar size={16} />
             <Text type="secondary">May 14, 2026</Text>
@@ -30,7 +33,7 @@ const DashboardHome = () => {
         <div className="flex gap-2">
           <Tag color="orange" className="flex items-center gap-1 border-none bg-orange-50 text-orange-600 px-3 py-1 rounded-full">
             <AlertCircle size={14} />
-            <span className="font-semibold">Weather Alert: Heavy Rain Expected</span>
+            <span className="font-semibold">{t('common.weatherAlert')}</span>
           </Tag>
         </div>
       </div>

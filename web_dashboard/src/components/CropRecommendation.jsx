@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Card, Form, Input, InputNumber, Button, Select, Space, Row, Col, Typography, Steps } from 'antd';
 import { Leaf, Thermometer, Droplets, FlaskConical, MapPin, Search } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
 
 const CropRecommendation = () => {
+  const { t } = useTranslation();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
@@ -28,8 +30,8 @@ const CropRecommendation = () => {
     <div className="max-w-6xl mx-auto space-y-6">
       <div className="flex justify-between items-end">
         <div>
-          <Title level={2} className="!mb-0">Crop Advisory</Title>
-          <Text type="secondary">Enter soil and environmental parameters for precision recommendations.</Text>
+          <Title level={2} className="!mb-0">{t('crop.title')}</Title>
+          <Text type="secondary">{t('crop.subtitle')}</Text>
         </div>
       </div>
 
@@ -44,7 +46,7 @@ const CropRecommendation = () => {
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
                 <Form.Item 
-                  label={<div className="flex items-center gap-2"><FlaskConical size={16}/><span>Nitrogen (N)</span></div>}
+                  label={<div className="flex items-center gap-2"><FlaskConical size={16}/><span>{t('crop.nitrogen')}</span></div>}
                   name="nitrogen"
                   rules={[{ required: true }]}
                 >
@@ -52,7 +54,7 @@ const CropRecommendation = () => {
                 </Form.Item>
 
                 <Form.Item 
-                  label={<div className="flex items-center gap-2"><FlaskConical size={16}/><span>Phosphorus (P)</span></div>}
+                  label={<div className="flex items-center gap-2"><FlaskConical size={16}/><span>{t('crop.phosphorus')}</span></div>}
                   name="phosphorus"
                   rules={[{ required: true }]}
                 >
@@ -60,7 +62,7 @@ const CropRecommendation = () => {
                 </Form.Item>
 
                 <Form.Item 
-                  label={<div className="flex items-center gap-2"><FlaskConical size={16}/><span>Potassium (K)</span></div>}
+                  label={<div className="flex items-center gap-2"><FlaskConical size={16}/><span>{t('crop.potassium')}</span></div>}
                   name="potassium"
                   rules={[{ required: true }]}
                 >
@@ -68,7 +70,7 @@ const CropRecommendation = () => {
                 </Form.Item>
 
                 <Form.Item 
-                  label={<div className="flex items-center gap-2"><Droplets size={16}/><span>Soil pH</span></div>}
+                  label={<div className="flex items-center gap-2"><Droplets size={16}/><span>{t('crop.ph')}</span></div>}
                   name="ph"
                   rules={[{ required: true }]}
                 >
@@ -76,7 +78,7 @@ const CropRecommendation = () => {
                 </Form.Item>
 
                 <Form.Item 
-                  label={<div className="flex items-center gap-2"><Thermometer size={16}/><span>Avg Temperature</span></div>}
+                  label={<div className="flex items-center gap-2"><Thermometer size={16}/><span>{t('crop.temp')}</span></div>}
                   name="temp"
                   rules={[{ required: true }]}
                 >
@@ -84,7 +86,7 @@ const CropRecommendation = () => {
                 </Form.Item>
 
                 <Form.Item 
-                  label={<div className="flex items-center gap-2"><Droplets size={16}/><span>Rainfall</span></div>}
+                  label={<div className="flex items-center gap-2"><Droplets size={16}/><span>{t('crop.rainfall')}</span></div>}
                   name="rainfall"
                   rules={[{ required: true }]}
                 >
@@ -96,7 +98,7 @@ const CropRecommendation = () => {
                 <Space>
                   <Button onClick={() => form.resetFields()}>Reset</Button>
                   <Button type="primary" icon={<Search size={16} />} loading={loading} htmlType="submit" className="px-8">
-                    Analyze Soil
+                    {t('crop.analyze')}
                   </Button>
                 </Space>
               </div>

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Card, Upload, message, Button, Progress, Tag, Alert } from 'antd';
 import { Upload as UploadIcon, Image as ImageIcon, CheckCircle, AlertTriangle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const { Dragger } = Upload;
 
 const DiseaseDetection = () => {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
 
@@ -46,8 +48,8 @@ const DiseaseDetection = () => {
     <div className="space-y-6 max-w-5xl mx-auto">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">Disease Detection</h1>
-          <p className="text-slate-500">Upload a leaf photo to identify crop diseases using AI.</p>
+          <h1 className="text-2xl font-bold text-slate-800">{t('disease.title')}</h1>
+          <p className="text-slate-500">{t('disease.subtitle')}</p>
         </div>
         <Tag color="green" className="px-3 py-1 rounded-full border-emerald-200">
           <div className="flex items-center gap-1">
@@ -65,16 +67,16 @@ const DiseaseDetection = () => {
                 <div className="bg-emerald-50 p-4 rounded-full mb-4">
                   <UploadIcon className="text-primary" size={32} />
                 </div>
-                <p className="text-lg font-semibold text-slate-700">Click or drag image to this area</p>
+                <p className="text-lg font-semibold text-slate-700">{t('disease.uploadText')}</p>
                 <p className="text-slate-500 max-w-xs text-center mt-2">
-                  Support for JPG, PNG. Please ensure the leaf is clearly visible and well-lit.
+                  {t('disease.uploadHint')}
                 </p>
               </div>
             </Dragger>
           </Card>
 
           {result && (
-            <Card title="Analysis Result" className="border-none shadow-sm">
+            <Card title={t('disease.analysisResult')} className="border-none shadow-sm">
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
                   <div className="bg-red-50 p-3 rounded-lg">

@@ -6,32 +6,33 @@ import {
   Bug, 
   CloudSun, 
   Settings, 
-  LogOut,
-  ChevronLeft,
-  ChevronRight
+  LogOut
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const Sidebar = ({ activeTab, setActiveTab }) => {
+  const { t } = useTranslation();
+
   const menuItems = [
     {
       key: 'dashboard',
       icon: <LayoutDashboard size={20} />,
-      label: 'Dashboard',
+      label: t('common.dashboard'),
     },
     {
       key: 'disease',
       icon: <Bug size={20} />,
-      label: 'Disease Detection',
+      label: t('common.disease'),
     },
     {
       key: 'recommendation',
       icon: <Sprout size={20} />,
-      label: 'Crop Advisory',
+      label: t('common.recommendation'),
     },
     {
       key: 'weather',
       icon: <CloudSun size={20} />,
-      label: 'Weather Analysis',
+      label: t('common.market'),
     },
     {
       type: 'divider',
@@ -39,12 +40,12 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
     {
       key: 'settings',
       icon: <Settings size={20} />,
-      label: 'Settings',
+      label: t('common.settings'),
     },
     {
       key: 'logout',
       icon: <LogOut size={20} />,
-      label: 'Logout',
+      label: t('common.logout'),
     },
   ];
 
