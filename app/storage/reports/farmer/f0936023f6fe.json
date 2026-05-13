@@ -1,0 +1,41 @@
+{
+  "id": "f0936023f6fe",
+  "module": "advisory",
+  "title": "Advisory report - Mango",
+  "created_at": "2026-04-29T12:31:41.168433+00:00",
+  "filename": "f0936023f6fe.html",
+  "payload": {
+    "soil_type": "Red",
+    "N": 43,
+    "P": 26,
+    "K": 50,
+    "temperature": 12,
+    "humidity": 39,
+    "ph": 8.4,
+    "rainfall": 101,
+    "moisture": 45,
+    "acres": 9.7
+  },
+  "result": {
+    "crop": {
+      "recommended_crop": "mango"
+    },
+    "fertilizer": {
+      "recommended_fertilizer": "10-26-26"
+    },
+    "price": {
+      "crop_name": "rice",
+      "total_cost": 104666.96993222221,
+      "expected_revenue": 421828.8469807649,
+      "expected_profit": 317161.87704854435,
+      "cost_per_acre": 10790.409271363116,
+      "profit_margin": 0.7518733707251811,
+      "prediction_source": "trained_regressor"
+    },
+    "summary": {
+      "headline": "Mango is the strongest crop match for the current field, paired with 10-26-26 support.",
+      "profit_signal": "Expected profit is approximately Rs. 317161.88 from 9.70 acres."
+    }
+  },
+  "notes": "Generated from the advisory dashboard workspace."
+}

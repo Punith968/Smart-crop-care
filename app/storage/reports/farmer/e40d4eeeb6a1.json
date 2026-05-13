@@ -1,0 +1,40 @@
+{
+  "id": "e40d4eeeb6a1",
+  "module": "advisory",
+  "title": "Advisory report - Rice",
+  "created_at": "2026-05-02T21:54:22.649656+00:00",
+  "filename": "e40d4eeeb6a1.html",
+  "payload": {
+    "N": 90,
+    "P": 42,
+    "K": 43,
+    "temperature": 25,
+    "humidity": 80,
+    "ph": 6.5,
+    "rainfall": 200,
+    "moisture": 38,
+    "soil_type": "Sandy",
+    "acres": 2.5
+  },
+  "result": {
+    "crop": {
+      "recommended_crop": "rice"
+    },
+    "fertilizer": {
+      "recommended_fertilizer": "14-35-14"
+    },
+    "price": {
+      "expected_profit": 101516.97990987553,
+      "total_cost": 31292.3039559999,
+      "expected_revenue": 132809.28386587577,
+      "cost_per_acre": 12516.92158239996,
+      "profit_margin": 0.764381652809736,
+      "prediction_source": "trained_regressor"
+    },
+    "summary": {
+      "headline": "Rice is the strongest crop match for the current field, paired with 14-35-14 support.",
+      "profit_signal": "Expected profit is approximately Rs. 101516.98 from 2.50 acres."
+    }
+  },
+  "notes": "Generated from the advisory dashboard workspace."
+}

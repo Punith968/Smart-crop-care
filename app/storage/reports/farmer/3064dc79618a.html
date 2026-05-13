@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Advisory report - Rice</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 32px; color: #1f2b1f; }
+    .sheet { max-width: 900px; margin: 0 auto; }
+    .hero { background: #184231; color: white; padding: 24px; border-radius: 18px; }
+    .pill { display: inline-block; margin-top: 8px; margin-right: 8px; padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,0.14); }
+    .card { border: 1px solid #d8d1c2; border-radius: 16px; padding: 18px; margin-top: 16px; }
+    pre { white-space: pre-wrap; word-break: break-word; background: #f7f3ea; padding: 14px; border-radius: 12px; }
+    .notes-box { background: #fff4eb; border-left: 4px solid #c96f3b; padding: 14px; border-radius: 10px; }
+  </style>
+</head>
+<body>
+  <article class="sheet">
+    <section class="hero">
+      <h1>Advisory report - Rice</h1>
+      <p>Generated for farmer on 2026-05-04T19:53:15.238310+00:00</p>
+      <div>
+        <span class="pill">Module: advisory</span>
+        <span class="pill">Report ID: 3064dc79618a</span>
+      </div>
+    </section>
+    <section class="card">
+      <strong>Input Snapshot</strong>
+      <pre>{
+  &quot;N&quot;: 90.0,
+  &quot;P&quot;: 42.0,
+  &quot;K&quot;: 43.0,
+  &quot;temperature&quot;: 25.0,
+  &quot;humidity&quot;: 80.0,
+  &quot;ph&quot;: 6.5,
+  &quot;rainfall&quot;: 200.0,
+  &quot;moisture&quot;: 38.0,
+  &quot;soil_type&quot;: &quot;Sandy&quot;,
+  &quot;acres&quot;: 2.5
+}</pre>
+    </section>
+    <section class="card">
+      <strong>Result Snapshot</strong>
+      <pre>{
+  &quot;crop&quot;: {
+    &quot;recommended_crop&quot;: &quot;rice&quot;
+  },
+  &quot;fertilizer&quot;: {
+    &quot;recommended_fertilizer&quot;: &quot;14-35-14&quot;
+  },
+  &quot;price&quot;: {
+    &quot;expected_profit&quot;: 101516.97990987553,
+    &quot;total_cost&quot;: 31292.3039559999,
+    &quot;expected_revenue&quot;: 132809.28386587577,
+    &quot;cost_per_acre&quot;: 12516.92158239996,
+    &quot;profit_margin&quot;: 0.764381652809736,
+    &quot;prediction_source&quot;: &quot;trained_regressor&quot;
+  },
+  &quot;summary&quot;: {
+    &quot;headline&quot;: &quot;Rice is the strongest crop match for the current field, paired with 14-35-14 support.&quot;,
+    &quot;profit_signal&quot;: &quot;Expected profit is approximately Rs. 101516.98 from 2.50 acres.&quot;
+  }
+}</pre>
+    </section>
+    <section class="card">
+      <strong>Notes</strong>
+      <div class="notes-box">Generated from the advisory dashboard workspace.</div>
+    </section>
+  </article>
+</body>
+</html>

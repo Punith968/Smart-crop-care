@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Advisory report - Rice</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f1e8;
+      --panel: #fffaf3;
+      --ink: #1f2b1f;
+      --muted: #66725f;
+      --line: #d8d1c2;
+      --accent: #2d6a4f;
+      --accent-2: #c96f3b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      background:
+        radial-gradient(circle at top right, rgba(201,111,59,0.18), transparent 32%),
+        radial-gradient(circle at left, rgba(45,106,79,0.18), transparent 35%),
+        var(--bg);
+      color: var(--ink);
+      padding: 40px 20px;
+    }
+    .sheet {
+      max-width: 980px;
+      margin: 0 auto;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 24px 80px rgba(31, 43, 31, 0.12);
+    }
+    .hero {
+      padding: 32px 36px;
+      background: linear-gradient(135deg, #1f513b, #3a7c58 60%, #d98752 140%);
+      color: white;
+    }
+    .hero h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+    .hero p {
+      margin: 10px 0 0;
+      color: rgba(255,255,255,0.82);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      padding: 24px 36px 0;
+    }
+    .pill {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 999px;
+      display: inline-block;
+      padding: 8px 14px;
+      margin-right: 10px;
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: white;
+      padding: 18px;
+    }
+    .card h2 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+    pre {
+      background: #f7f3ea;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+    .notes {
+      padding: 24px 36px 36px;
+    }
+    .notes-box {
+      border-left: 4px solid var(--accent-2);
+      background: #fff4eb;
+      padding: 16px 18px;
+      border-radius: 12px;
+      color: #5f3b24;
+    }
+  </style>
+</head>
+<body>
+  <article class="sheet">
+    <section class="hero">
+      <h1>Advisory report - Rice</h1>
+      <p>Generated for farmer on 2026-05-02T21:54:22.649656+00:00</p>
+      <div>
+        <span class="pill">Module: advisory</span>
+        <span class="pill">Report ID: e40d4eeeb6a1</span>
+      </div>
+    </section>
+    <section class="grid">
+      <div class="card">
+        <h2>Input Snapshot</h2>
+        <pre>{
+  &quot;N&quot;: 90,
+  &quot;P&quot;: 42,
+  &quot;K&quot;: 43,
+  &quot;temperature&quot;: 25,
+  &quot;humidity&quot;: 80,
+  &quot;ph&quot;: 6.5,
+  &quot;rainfall&quot;: 200,
+  &quot;moisture&quot;: 38,
+  &quot;soil_type&quot;: &quot;Sandy&quot;,
+  &quot;acres&quot;: 2.5
+}</pre>
+      </div>
+      <div class="card">
+        <h2>AI Output</h2>
+        <pre>{
+  &quot;crop&quot;: {
+    &quot;recommended_crop&quot;: &quot;rice&quot;
+  },
+  &quot;fertilizer&quot;: {
+    &quot;recommended_fertilizer&quot;: &quot;14-35-14&quot;
+  },
+  &quot;price&quot;: {
+    &quot;expected_profit&quot;: 101516.97990987553,
+    &quot;total_cost&quot;: 31292.3039559999,
+    &quot;expected_revenue&quot;: 132809.28386587577,
+    &quot;cost_per_acre&quot;: 12516.92158239996,
+    &quot;profit_margin&quot;: 0.764381652809736,
+    &quot;prediction_source&quot;: &quot;trained_regressor&quot;
+  },
+  &quot;summary&quot;: {
+    &quot;headline&quot;: &quot;Rice is the strongest crop match for the current field, paired with 14-35-14 support.&quot;,
+    &quot;profit_signal&quot;: &quot;Expected profit is approximately Rs. 101516.98 from 2.50 acres.&quot;
+  }
+}</pre>
+      </div>
+    </section>
+    <section class="notes">
+      <h2 style="margin-top:0;">Notes</h2>
+      <div class="notes-box">Generated from the advisory dashboard workspace.</div>
+    </section>
+  </article>
+</body>
+</html>

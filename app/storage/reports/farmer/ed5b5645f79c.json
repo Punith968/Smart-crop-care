@@ -1,0 +1,41 @@
+{
+  "id": "ed5b5645f79c",
+  "module": "advisory",
+  "title": "Advisory report - Coffee",
+  "created_at": "2026-04-29T12:04:42.489017+00:00",
+  "filename": "ed5b5645f79c.html",
+  "payload": {
+    "soil_type": "Sandy",
+    "N": 82,
+    "P": 36,
+    "K": 40,
+    "temperature": 29,
+    "humidity": 66,
+    "ph": 6.4,
+    "rainfall": 118,
+    "moisture": 26,
+    "acres": 2.1
+  },
+  "result": {
+    "crop": {
+      "recommended_crop": "coffee"
+    },
+    "fertilizer": {
+      "recommended_fertilizer": "14-35-14"
+    },
+    "price": {
+      "crop_name": "rice",
+      "total_cost": 26578.348523999917,
+      "expected_revenue": 115465.35117407342,
+      "expected_profit": 88887.0026500731,
+      "cost_per_acre": 12656.35643999996,
+      "profit_margin": 0.7698153753160869,
+      "prediction_source": "trained_regressor"
+    },
+    "summary": {
+      "headline": "Coffee is the strongest crop match for the current field, paired with 14-35-14 support.",
+      "profit_signal": "Expected profit is approximately Rs. 88887.00 from 2.10 acres."
+    }
+  },
+  "notes": "Generated from the advisory dashboard workspace."
+}

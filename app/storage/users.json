@@ -1,0 +1,30 @@
+[
+  {
+    "username": "farmer",
+    "full_name": "Farmer Demo",
+    "salt": "95286f34035f026923f9342de93c6483",
+    "password_hash": "f2dda428c4a8b4fbdb389fb63c52df019e094bb20dc7d572888b346edac00fb2",
+    "created_at": "2026-04-22T12:15:19.572225+00:00"
+  },
+  {
+    "username": "admin",
+    "full_name": "Farm Admin",
+    "salt": "0ab76fe72a6062dfe0188b3856ccb5b1",
+    "password_hash": "552efb55163650d5f71c3e1fa789698ecc4285d2249a702e52306b65fe0e2c31",
+    "created_at": "2026-04-22T12:15:19.657556+00:00"
+  },
+  {
+    "username": "bharath",
+    "full_name": "Bharath S",
+    "salt": "2257a86a5a05274a880f4013a6db86d9",
+    "password_hash": "932618f28e3a1ab5bb382aedbf200f3e9e4d5be17ee9a68cad2f963200161c31",
+    "created_at": "2026-04-22T13:13:53.121146+00:00"
+  },
+  {
+    "username": "punithc",
+    "full_name": "huchsuxhc",
+    "salt": "14bfb08b6d8be27f5cded3dade72ec81",
+    "password_hash": "895ff853d5e300fd1d1dbc0badbe4477408bdbf8df278244f94358eb10de050b",
+    "created_at": "2026-05-13T21:42:32.215751+00:00"
+  }
+]
