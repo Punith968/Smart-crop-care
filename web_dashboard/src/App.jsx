@@ -1,127 +1,184 @@
 import React, { useState } from 'react';
-import { Layout, Button, Avatar, Badge, Dropdown, Space } from 'antd';
-import { 
-  Bell, 
-  Search, 
-  Menu as MenuIcon,
-  X,
-  Languages
-} from 'lucide-react';
+import { Avatar, Dropdown, Button } from 'antd';
+import { Sprout, Bug, FileText, Languages, ChevronDown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import Sidebar from './components/Sidebar';
-import DashboardHome from './components/DashboardHome';
+import { Menu } from 'antd';
+import { LogOut, HelpCircle } from 'lucide-react';
 import DiseaseDetection from './components/DiseaseDetection';
 import CropRecommendation from './components/CropRecommendation';
-import MarketAnalysis from './components/MarketAnalysis';
+import ReportsPage from './components/ReportsPage';
+import Login from './components/Login';
 
-const { Header, Sider, Content } = Layout;
-
-function App() {
-  const { t, i18n } = useTranslation();
-  const [activeTab, setActiveTab] = useState('dashboard');
-  const [collapsed, setCollapsed] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
-  };
-
-  const langMenuItems = [
-    { key: 'en', label: 'English', onClick: () => changeLanguage('en') },
-    { key: 'kn', label: 'ಕನ್ನಡ (Kannada)', onClick: () => changeLanguage('kn') },
+/* ────────── Sidebar (desktop only) ────────── */
+const DesktopSidebar = ({ activeTab, setActiveTab, onLogout, t }) => {
+  const items = [
+    { key: 'advisory', icon: <Sprout size={18} />, label: t('common.advisory') },
+    { key: 'disease', icon: <Bug size={18} />, label: t('common.disease') },
+    { key: 'reports', icon: <FileText size={18} />, label: t('common.reports') },
+    { type: 'divider' },
+    { key: 'logout', icon: <LogOut size={18} />, label: t('common.logout'), danger: true },
   ];
 
-  const renderContent = () => {
+  return (
+    <>
+      <div style={{ padding: '16px 16px 12px', display: 'flex', alignItems: 'center', gap: 10, borderBottom: '1px solid var(--border)' }}>
+        <div style={{ background: 'linear-gradient(135deg, #16a34a, #15803d)', padding: 7, borderRadius: 10, display: 'flex' }}>
+          <Sprout size={18} style={{ color: 'white' }} />
+        </div>
+        <div>
+          <span style={{ fontSize: 15, fontWeight: 800, color: 'var(--text)', display: 'block', lineHeight: 1 }}>FCA</span>
+          <span style={{ fontSize: 9, color: 'var(--text-muted)', fontWeight: 600 }}>{t('common.appName')}</span>
+        </div>
+      </div>
+      <div style={{ flex: 1, padding: '8px 6px' }}>
+        <Menu mode="inline" selectedKeys={[activeTab]} items={items}
+          onClick={({ key }) => key === 'logout' ? onLogout() : setActiveTab(key)}
+          style={{ border: 'none', background: 'transparent' }} />
+      </div>
+      <div style={{ padding: 12 }}>
+        <div style={{ background: 'var(--green-light)', borderRadius: 12, padding: 14, border: '1px solid var(--green-border)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 4 }}>
+            <HelpCircle size={12} style={{ color: 'var(--green)' }} />
+            <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--green-dark)' }}>{t('common.support')}</span>
+          </div>
+          <p style={{ fontSize: 10, color: '#4ade80', lineHeight: 1.5 }}>{t('common.supportDesc')}</p>
+        </div>
+      </div>
+    </>
+  );
+};
+
+/* ────────── App ────────── */
+function App() {
+  const { t, i18n } = useTranslation();
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
+  const [activeTab, setActiveTab] = useState('advisory');
+
+  const onLogout = () => {
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+  };
+
+  const changeLanguage = (lng) => i18n.changeLanguage(lng);
+  const langMenu = [
+    { key: 'en', label: 'English', onClick: () => changeLanguage('en') },
+    { key: 'kn', label: 'ಕನ್ನಡ', onClick: () => changeLanguage('kn') },
+  ];
+
+  const tabs = [
+    { key: 'advisory', icon: <Sprout size={20} />, label: t('common.advisory') },
+    { key: 'disease', icon: <Bug size={20} />, label: t('common.disease') },
+    { key: 'reports', icon: <FileText size={20} />, label: t('common.reports') },
+  ];
+
+  const page = () => {
     switch (activeTab) {
-      case 'dashboard':
-        return <DashboardHome />;
-      case 'disease':
-        return <DiseaseDetection />;
-      case 'recommendation':
-        return <CropRecommendation />;
-      case 'weather':
-        return <div className="p-20 text-center text-slate-400">Weather detailed view coming soon...</div>;
-      case 'settings':
-        return <MarketAnalysis />; // Using market analysis for demo
-      default:
-        return <DashboardHome />;
+      case 'advisory': return <CropRecommendation />;
+      case 'disease': return <DiseaseDetection />;
+      case 'reports': return <ReportsPage />;
+      default: return <CropRecommendation />;
     }
   };
 
-  return (
-    <Layout className="min-h-screen">
-      {/* Desktop Sider */}
-      <Sider
-        trigger={null}
-        collapsible
-        collapsed={collapsed}
-        width={260}
-        className="hidden lg:block fixed h-screen left-0 top-0 z-50 shadow-sm"
-      >
-        <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
-      </Sider>
+  /* ── Login ── */
+  if (!isLoggedIn) {
+    return (
+      <div style={{ position: 'relative' }}>
+        <div style={{ position: 'fixed', top: 12, right: 12, zIndex: 50 }}>
+          <Dropdown menu={{ items: langMenu }} placement="bottomRight">
+            <Button size="small" style={{
+              background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(10px)',
+              border: 'none', borderRadius: 10, height: 36, padding: '0 12px',
+              display: 'flex', alignItems: 'center', gap: 5,
+              boxShadow: '0 2px 10px rgba(0,0,0,0.08)', fontWeight: 700, fontSize: 12,
+            }}>
+              <Languages size={14} style={{ color: '#16a34a' }} />
+              {i18n.language === 'kn' ? 'ಕನ್ನಡ' : 'EN'}
+            </Button>
+          </Dropdown>
+        </div>
+        <Login onLogin={() => setIsLoggedIn(true)} />
+      </div>
+    );
+  }
 
-      {/* Mobile Menu */}
-      <div className={`lg:hidden fixed inset-0 z-[60] bg-black/50 transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-        <div className={`fixed left-0 top-0 bottom-0 w-72 bg-white transform transition-transform duration-300 ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-          <div className="absolute right-4 top-4">
-            <Button type="text" icon={<X size={24} />} onClick={() => setMobileMenuOpen(false)} />
+  /* ── Main App ── */
+  return (
+    <div className="shell">
+      {/* ── Desktop sidebar ── */}
+      <div className="desktop-sidebar">
+        <DesktopSidebar activeTab={activeTab} setActiveTab={setActiveTab}
+          onLogout={onLogout} t={t} />
+      </div>
+
+      {/* ── Desktop topbar ── */}
+      <div className="desktop-topbar">
+        <div>
+          <p style={{ fontSize: 9, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{t('common.appName')}</p>
+          <p style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)' }}>{tabs.find(tb => tb.key === activeTab)?.label}</p>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <Dropdown menu={{ items: langMenu }} placement="bottomRight">
+            <Button size="small" style={{ borderRadius: 8, border: '1px solid var(--border-strong)', fontWeight: 600, fontSize: 12, height: 32 }}>
+              <Languages size={14} style={{ marginRight: 4 }} />
+              {i18n.language === 'kn' ? 'ಕನ್ನಡ' : 'EN'}
+              <ChevronDown size={10} style={{ marginLeft: 2, color: 'var(--text-muted)' }} />
+            </Button>
+          </Dropdown>
+          <div onClick={onLogout} style={{
+            display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer',
+            background: 'var(--bg)', padding: '4px 12px 4px 4px', borderRadius: 10, border: '1px solid var(--border)',
+          }}>
+            <Avatar size={28} style={{ background: 'var(--green)', borderRadius: 7, fontWeight: 800, fontSize: 11 }}>F</Avatar>
+            <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-secondary)' }}>{t('common.logout')}</span>
           </div>
-          <Sidebar 
-            activeTab={activeTab} 
-            setActiveTab={(key) => {
-              setActiveTab(key);
-              setMobileMenuOpen(false);
-            }} 
-          />
         </div>
       </div>
 
-      <Layout className={`${!collapsed ? 'lg:ml-[260px]' : 'lg:ml-[80px]'} transition-all duration-300`}>
-        <Header className="bg-white border-b border-slate-100 px-6 flex items-center justify-between sticky top-0 z-40 h-16">
-          <div className="flex items-center gap-4">
-            <Button
-              type="text"
-              icon={mobileMenuOpen ? <X size={20} /> : <MenuIcon size={20} />}
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden"
-            />
-            <div className="relative hidden md:block">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
-              <input 
-                type="text" 
-                placeholder={t('common.search')}
-                className="pl-10 pr-4 py-2 bg-slate-50 border-none rounded-lg text-sm w-72 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
-              />
-            </div>
+      {/* ── Mobile header ── */}
+      <div className="mobile-header">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div style={{ background: 'linear-gradient(135deg, #16a34a, #15803d)', padding: 5, borderRadius: 7, display: 'flex' }}>
+            <Sprout size={14} style={{ color: 'white' }} />
           </div>
-
-          <div className="flex items-center gap-2 md:gap-4">
-            <Dropdown menu={{ items: langMenuItems }} placement="bottomRight">
-              <Button type="text" icon={<Languages size={20} className="text-slate-600" />}>
-                <span className="hidden sm:inline ml-1 text-sm font-medium">{i18n.language === 'kn' ? 'ಕನ್ನಡ' : 'English'}</span>
-              </Button>
-            </Dropdown>
-
-            <Badge dot color="#10b981" offset={[-2, 4]}>
-              <Button type="text" icon={<Bell size={20} className="text-slate-600" />} />
-            </Badge>
-            <div className="h-8 w-px bg-slate-100 mx-1 md:mx-2" />
-            <div className="flex items-center gap-3 cursor-pointer hover:bg-slate-50 p-1 rounded-lg transition-colors">
-              <div className="text-right hidden sm:block">
-                <p className="text-xs font-bold text-slate-800 leading-none">Farmer John</p>
-                <p className="text-[10px] text-slate-500 mt-1">Premium Plan</p>
-              </div>
-              <Avatar shape="square" className="bg-emerald-100 text-emerald-600 font-bold">FJ</Avatar>
-            </div>
+          <div>
+            <p style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)', lineHeight: 1 }}>SmartCrop</p>
+            <p style={{ fontSize: 9, color: 'var(--text-muted)', fontWeight: 600 }}>{tabs.find(tb => tb.key === activeTab)?.label}</p>
           </div>
-        </Header>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <Dropdown menu={{ items: langMenu }} placement="bottomRight">
+            <button style={{
+              border: '1px solid var(--border-strong)', background: 'white', borderRadius: 8,
+              height: 30, padding: '0 8px', fontSize: 11, fontWeight: 700, cursor: 'pointer',
+              display: 'flex', alignItems: 'center', gap: 3,
+            }}>
+              {i18n.language === 'kn' ? 'ಕ' : 'EN'}
+            </button>
+          </Dropdown>
+          <Avatar size={30} style={{ background: 'var(--green)', borderRadius: 8, fontWeight: 800, fontSize: 11, cursor: 'pointer' }}
+            onClick={onLogout}>F</Avatar>
+        </div>
+      </div>
 
-        <Content className="p-6 lg:p-10 bg-[#f9fafb]">
-          {renderContent()}
-        </Content>
-      </Layout>
-    </Layout>
+      {/* ── Page content ── */}
+      <div className="page-scroll">
+        <div className="fade-in" style={{ maxWidth: 640, margin: '0 auto' }}>
+          {page()}
+        </div>
+      </div>
+
+      {/* ── Bottom nav (mobile) ── */}
+      <div className="bottom-nav">
+        {tabs.map(tab => (
+          <button key={tab.key} className={`nav-btn ${activeTab === tab.key ? 'active' : ''}`}
+            onClick={() => setActiveTab(tab.key)}>
+            <div className="icon-wrap">{tab.icon}</div>
+            <span>{tab.label}</span>
+          </button>
+        ))}
+      </div>
+    </div>
   );
 }
 

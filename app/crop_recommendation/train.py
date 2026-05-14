@@ -9,20 +9,14 @@ from sklearn.impute import SimpleImputer
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 
+from sklearn.preprocessing import OneHotEncoder
+
 from app.shared.paths import CROP_DATASET_PATH, CROP_MODEL_PATH, ensure_artifacts_dir
 
 
-FEATURE_COLUMNS = ["N", "P", "K", "temperature", "humidity", "ph", "rainfall"]
-ENGINEERED_COLUMNS = FEATURE_COLUMNS + [
-    "npk_total",
-    "np_ratio",
-    "nk_ratio",
-    "pk_ratio",
-    "temperature_humidity_index",
-    "rainfall_ph_interaction",
-    "moisture_balance_index",
-]
-TARGET_COLUMN = "label"
+FEATURE_COLUMNS = ["N", "P", "K", "Temperature", "Humidity", "pH", "Rainfall", "Soil_Type"]
+ENGINEERED_COLUMNS = ["N", "P", "K", "Temperature", "Humidity", "pH", "Rainfall", "npk_total", "np_ratio", "nk_ratio", "pk_ratio"]
+TARGET_COLUMN = "Crop_name"
 
 
 class CropFeatureEngineer(BaseEstimator, TransformerMixin):
@@ -31,17 +25,14 @@ class CropFeatureEngineer(BaseEstimator, TransformerMixin):
 
     def transform(self, X):
         df = pd.DataFrame(X).copy()
-        df = df.loc[:, FEATURE_COLUMNS]
         eps = 1e-6
 
         df["npk_total"] = df["N"] + df["P"] + df["K"]
         df["np_ratio"] = df["N"] / (df["P"] + eps)
         df["nk_ratio"] = df["N"] / (df["K"] + eps)
         df["pk_ratio"] = df["P"] / (df["K"] + eps)
-        df["temperature_humidity_index"] = df["temperature"] * (df["humidity"] / 100.0)
-        df["rainfall_ph_interaction"] = df["rainfall"] * df["ph"]
-        df["moisture_balance_index"] = df["humidity"] + (df["rainfall"] / 10.0)
-        return df
+        
+        return df[ENGINEERED_COLUMNS + ["Soil_Type"]]
 
 
 def build_crop_pipeline() -> Pipeline:
@@ -51,6 +42,14 @@ def build_crop_pipeline() -> Pipeline:
                 "numeric",
                 Pipeline(steps=[("imputer", SimpleImputer(strategy="median"))]),
                 ENGINEERED_COLUMNS,
+            ),
+            (
+                "categorical",
+                Pipeline(steps=[
+                    ("imputer", SimpleImputer(strategy="constant", fill_value="Unknown")),
+                    ("encoder", OneHotEncoder(handle_unknown="ignore", sparse_output=False))
+                ]),
+                ["Soil_Type"],
             )
         ],
         remainder="drop",

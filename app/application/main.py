@@ -1,4 +1,5 @@
 from fastapi import Depends, FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, Response
 from fastapi.staticfiles import StaticFiles
 
@@ -19,12 +20,37 @@ from app.workspace.schema import AdvisoryWorkspaceRequest, DiseaseWorkspaceReque
 from app.workspace.service import run_advisory_workspace, run_disease_workspace
 
 app = FastAPI(title="Farmer Crop Advisory API", version="2.0.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 ensure_storage_dirs()
-app.mount("/static", StaticFiles(directory=WEB_STATIC_DIR), name="static")
 
+@app.exception_handler(Exception)
+async def global_exception_handler(request, exc):
+    import traceback
+    print("GLOBAL EXCEPTION CAUGHT:")
+    traceback.print_exc()
+    return Response(
+        content=f"Internal Server Error: {str(exc)}",
+        status_code=500
+    )
 
+# SPA Routing and Static Asset Serving
 @app.get("/", include_in_schema=False)
-def web_app() -> FileResponse:
+def index():
+    return FileResponse(WEB_STATIC_DIR / "index.html")
+
+@app.get("/{full_path:path}", include_in_schema=False)
+def catch_all(full_path: str):
+    file_path = WEB_STATIC_DIR / full_path
+    if file_path.is_file():
+        return FileResponse(file_path)
     return FileResponse(WEB_STATIC_DIR / "index.html")
 
 

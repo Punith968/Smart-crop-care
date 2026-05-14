@@ -39,8 +39,8 @@ build/
 *.joblib
 models/
 app/artifacts/
-"disese dtection/best_model.pth"
-"disese dtection/checkpoints/"
+"disease_detection_src/best_model.pth"
+"disease_detection_src/checkpoints/"
 
 # Logs
 *.log

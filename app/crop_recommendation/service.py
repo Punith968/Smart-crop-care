@@ -31,6 +31,7 @@ def predict_crop(payload: CropRequest) -> Dict[str, str]:
             payload.humidity,
             payload.ph,
             payload.rainfall,
+            payload.soil_type,
         ]],
         columns=FEATURE_COLUMNS,
     )
@@ -49,6 +50,7 @@ def predict_top_crops(payload: CropRequest, top_n: int = 4) -> Dict[str, List[Di
             payload.humidity,
             payload.ph,
             payload.rainfall,
+            payload.soil_type,
         ]],
         columns=FEATURE_COLUMNS,
     )

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Card, Statistic, Typography, Tag, Timeline } from 'antd';
+import { Row, Col, Card, Typography, Tag, Timeline } from 'antd';
 import { 
   CloudRain, 
   Thermometer, 
@@ -8,154 +8,122 @@ import {
   AlertCircle,
   TrendingUp,
   MapPin,
-  Calendar
+  Calendar,
+  Leaf,
+  ShieldCheck
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const { Title, Text } = Typography;
 
+const WeatherCard = ({ icon: Icon, label, value, color, bg }) => (
+  <Card style={{ border: 'none', borderRadius: '16px', overflow: 'hidden' }}>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div>
+        <p style={{ fontSize: '11px', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '6px' }}>{label}</p>
+        <p style={{ fontSize: '28px', fontWeight: 800, color: '#0f172a', lineHeight: 1 }}>{value}</p>
+      </div>
+      <div style={{ background: bg, padding: '14px', borderRadius: '14px' }}>
+        <Icon style={{ color }} size={22} />
+      </div>
+    </div>
+  </Card>
+);
+
 const DashboardHome = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+      {/* Header */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '32px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
-          <Title level={2} className="!mb-0">{t('common.welcome')}</Title>
-          <div className="flex items-center gap-2 text-slate-500 mt-1">
-            <MapPin size={16} />
-            <Text type="secondary">{t('common.region')}</Text>
-            <span className="mx-1">•</span>
-            <Calendar size={16} />
-            <Text type="secondary">May 14, 2026</Text>
+          <Title level={2} style={{ marginBottom: '4px', fontWeight: 800, color: '#0f172a' }}>{t('common.welcome')}</Title>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#94a3b8' }}>
+            <MapPin size={15} />
+            <span style={{ fontSize: '14px' }}>{t('common.region')}</span>
+            <span style={{ margin: '0 4px', color: '#e2e8f0' }}>·</span>
+            <Calendar size={15} />
+            <span style={{ fontSize: '14px' }}>May 14, 2026</span>
           </div>
         </div>
-        <div className="flex gap-2">
-          <Tag color="orange" className="flex items-center gap-1 border-none bg-orange-50 text-orange-600 px-3 py-1 rounded-full">
-            <AlertCircle size={14} />
-            <span className="font-semibold">{t('common.weatherAlert')}</span>
-          </Tag>
-        </div>
+        <Tag color="orange" style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 14px', borderRadius: '10px', border: 'none', background: '#fff7ed', color: '#ea580c', fontWeight: 600, fontSize: '13px' }}>
+          <AlertCircle size={14} />
+          {t('common.weatherAlert')}
+        </Tag>
       </div>
 
-      {/* Weather Overview */}
-      <Row gutter={[16, 16]}>
-        <Col xs={24} sm={12} lg={6}>
-          <Card className="border-none shadow-sm bg-gradient-to-br from-white to-emerald-50">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Temperature</p>
-                <h3 className="text-2xl font-bold text-slate-800">32°C</h3>
-              </div>
-              <div className="bg-orange-100 p-3 rounded-xl">
-                <Thermometer className="text-orange-500" size={24} />
-              </div>
-            </div>
-          </Card>
+      {/* Weather Cards */}
+      <Row gutter={[16, 16]} style={{ marginBottom: '28px' }}>
+        <Col xs={12} sm={12} lg={6}>
+          <WeatherCard icon={Thermometer} label={t('dashboard.temp')} value="32°C" color="#f97316" bg="#fff7ed" />
         </Col>
-        <Col xs={24} sm={12} lg={6}>
-          <Card className="border-none shadow-sm bg-gradient-to-br from-white to-blue-50">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Humidity</p>
-                <h3 className="text-2xl font-bold text-slate-800">64%</h3>
-              </div>
-              <div className="bg-blue-100 p-3 rounded-xl">
-                <Droplets className="text-blue-500" size={24} />
-              </div>
-            </div>
-          </Card>
+        <Col xs={12} sm={12} lg={6}>
+          <WeatherCard icon={Droplets} label={t('dashboard.humidity')} value="64%" color="#3b82f6" bg="#eff6ff" />
         </Col>
-        <Col xs={24} sm={12} lg={6}>
-          <Card className="border-none shadow-sm bg-gradient-to-br from-white to-slate-50">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Wind Speed</p>
-                <h3 className="text-2xl font-bold text-slate-800">12 km/h</h3>
-              </div>
-              <div className="bg-slate-100 p-3 rounded-xl">
-                <Wind className="text-slate-500" size={24} />
-              </div>
-            </div>
-          </Card>
+        <Col xs={12} sm={12} lg={6}>
+          <WeatherCard icon={Wind} label={t('dashboard.wind')} value="12 km/h" color="#64748b" bg="#f1f5f9" />
         </Col>
-        <Col xs={24} sm={12} lg={6}>
-          <Card className="border-none shadow-sm bg-gradient-to-br from-white to-cyan-50">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Rainfall</p>
-                <h3 className="text-2xl font-bold text-slate-800">0.5 mm</h3>
-              </div>
-              <div className="bg-cyan-100 p-3 rounded-xl">
-                <CloudRain className="text-cyan-500" size={24} />
-              </div>
-            </div>
-          </Card>
+        <Col xs={12} sm={12} lg={6}>
+          <WeatherCard icon={CloudRain} label={t('dashboard.rainfall')} value="0.5 mm" color="#06b6d4" bg="#ecfeff" />
         </Col>
       </Row>
 
+      {/* Main Content */}
       <Row gutter={[24, 24]}>
         <Col span={24} lg={16}>
-          <Card title="Market Summary" extra={<a href="#" className="text-primary font-bold">View All</a>} className="border-none shadow-sm">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-100">
-                <p className="text-xs font-bold text-emerald-700 uppercase tracking-widest">Maize</p>
-                <p className="text-lg font-bold text-emerald-900 mt-1">₹1,950</p>
-                <div className="flex items-center gap-1 text-emerald-600 text-xs mt-2 font-bold">
-                  <TrendingUp size={12} />
-                  <span>+5.6%</span>
+          <Card 
+            title={t('dashboard.marketTitle')} 
+            extra={<a style={{ color: '#16a34a', fontWeight: 700, fontSize: '13px' }}>{t('dashboard.viewAll')}</a>}
+            style={{ border: 'none', borderRadius: '16px' }}
+          >
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
+              {[
+                { name: t('dashboard.maize'), price: '₹1,950', change: '+5.6%', up: true, highlight: true },
+                { name: t('dashboard.wheat'), price: '₹2,275', change: '+2.4%', up: true },
+                { name: t('dashboard.rice'), price: '₹4,500', change: '-1.2%', up: false },
+              ].map((item) => (
+                <div key={item.name} style={{
+                  padding: '20px',
+                  borderRadius: '14px',
+                  background: item.highlight ? '#f0fdf4' : '#f8fafc',
+                  border: `1px solid ${item.highlight ? '#bbf7d0' : '#f1f5f9'}`,
+                }}>
+                  <p style={{ fontSize: '11px', fontWeight: 700, color: item.highlight ? '#15803d' : '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{item.name}</p>
+                  <p style={{ fontSize: '22px', fontWeight: 800, color: '#0f172a', marginTop: '4px' }}>{item.price}</p>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '8px', color: item.up ? '#16a34a' : '#ef4444', fontSize: '12px', fontWeight: 700 }}>
+                    <TrendingUp size={12} style={item.up ? {} : { transform: 'rotate(180deg)' }} />
+                    {item.change}
+                  </div>
                 </div>
-              </div>
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-100">
-                <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Wheat</p>
-                <p className="text-lg font-bold text-slate-800 mt-1">₹2,275</p>
-                <div className="flex items-center gap-1 text-emerald-600 text-xs mt-2 font-bold">
-                  <TrendingUp size={12} />
-                  <span>+2.4%</span>
-                </div>
-              </div>
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-100">
-                <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Rice</p>
-                <p className="text-lg font-bold text-slate-800 mt-1">₹4,500</p>
-                <div className="flex items-center gap-1 text-red-500 text-xs mt-2 font-bold">
-                  <TrendingUp size={12} className="rotate-180" />
-                  <span>-1.2%</span>
-                </div>
-              </div>
+              ))}
             </div>
-            
-            <div className="mt-8">
-              <h4 className="text-sm font-bold text-slate-800 mb-4">Advisory Summary</h4>
-              <div className="space-y-3">
-                <AlertCircle className="inline-block text-orange-500 mr-2" size={16} />
-                <span className="text-sm text-slate-600">Consider planting legumes next month to improve soil nitrogen.</span>
-                <div className="h-px bg-slate-100 my-2" />
-                <AlertCircle className="inline-block text-emerald-500 mr-2" size={16} />
-                <span className="text-sm text-slate-600">Current soil moisture is optimal for wheat maturation.</span>
+
+            <div style={{ marginTop: '28px' }}>
+              <h4 style={{ fontSize: '13px', fontWeight: 700, color: '#334155', marginBottom: '16px' }}>{t('dashboard.advisory')}</h4>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', padding: '14px', borderRadius: '12px', background: '#fffbeb' }}>
+                  <Leaf size={18} style={{ color: '#d97706', flexShrink: 0, marginTop: '2px' }} />
+                  <span style={{ fontSize: '13px', color: '#475569', lineHeight: 1.6 }}>{t('dashboard.alert1')}</span>
+                </div>
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', padding: '14px', borderRadius: '12px', background: '#f0fdf4' }}>
+                  <ShieldCheck size={18} style={{ color: '#16a34a', flexShrink: 0, marginTop: '2px' }} />
+                  <span style={{ fontSize: '13px', color: '#475569', lineHeight: 1.6 }}>{t('dashboard.alert2')}</span>
+                </div>
               </div>
             </div>
           </Card>
         </Col>
 
         <Col span={24} lg={8}>
-          <Card title="Activity Timeline" className="border-none shadow-sm">
+          <Card title={t('dashboard.timeline')} style={{ border: 'none', borderRadius: '16px' }}>
             <Timeline
+              style={{ marginTop: '8px' }}
               items={[
-                {
-                  color: 'green',
-                  children: 'Maize price prediction updated to Bullish',
-                },
-                {
-                  color: 'green',
-                  children: 'Tomato Late Blight detected in East Section',
-                },
-                {
-                  color: 'blue',
-                  children: 'Soil analysis report generated',
-                },
-                {
-                  children: 'System update v2.4.1 completed',
-                },
+                { color: 'green', children: <span style={{ fontSize: '13px', color: '#475569' }}>{t('dashboard.event1')}</span> },
+                { color: 'red', children: <span style={{ fontSize: '13px', color: '#475569' }}>{t('dashboard.event2')}</span> },
+                { color: 'blue', children: <span style={{ fontSize: '13px', color: '#475569' }}>{t('dashboard.event3')}</span> },
+                { color: 'gray', children: <span style={{ fontSize: '13px', color: '#475569' }}>{t('dashboard.event4')}</span> },
               ]}
             />
           </Card>

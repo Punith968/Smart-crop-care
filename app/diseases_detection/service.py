@@ -9,10 +9,11 @@ import numpy as np
 from app.diseases_detection.schema import DiseaseRequest
 from app.shared.paths import DISEASE_LABELS_PATH, DISEASE_MODEL_PATH
 
-sys.path.append(str(Path(__file__).resolve().parents[2] / "disese dtection"))
+sys.path.append(str(Path(__file__).resolve().parents[2] / "disease_detection_src"))
 try:
     import predict as pt_predict
-except ImportError:
+except ImportError as e:
+    print(f"DEBUG: Could not import predict from disease_detection_src: {e}")
     pt_predict = None
 
 _pt_model = None
@@ -75,20 +76,51 @@ def _load_tensorflow():
 
 def _calculate_spot_risk(image_path: str) -> float:
     """
-    Analyzes the leaf image for 'spots' using pixel variance and intensity.
-    Simulates a heatmap transaction to identify non-healthy regions.
+    Analyzes the leaf image for 'spots' using pixel variance and color distribution.
+    Improved to reduce false positives for healthy leaves with high detail.
     """
     try:
         with Image.open(image_path) as img:
-            img = img.convert("L")  # Grayscale
-            stat = ImageStat.Stat(img)
-            # Higher variance in a leaf image often indicates irregular spots/lesions
-            variance = stat.var[0]
-            # Normalize variance to a 0-100 scale (typical leaf variance is 500-5000)
-            risk = min(variance / 60, 100)
-            return float(risk)
-    except Exception:
-        return 10.0
+            rgb = img.convert("RGB")
+            # Shrink for faster analysis
+            rgb = rgb.resize((150, 150))
+            pixels = np.array(rgb)
+            
+            # Grayscale for variance
+            gray = np.array(img.convert("L").resize((150, 150)))
+            variance = np.var(gray)
+            
+            # Color analysis
+            r, g, b = pixels[:,:,0], pixels[:,:,1], pixels[:,:,2]
+            
+            # Healthy leaves are green. Diseased ones have brown/yellow/spots.
+            # Brown-ish pixels: R > G and R > B and G > B (approx)
+            brown_mask = (r > g) & (r > b) & (g > b * 0.8)
+            brown_ratio = np.mean(brown_mask)
+            
+            # Yellow-ish pixels: R > G * 0.8 and G > B * 1.2
+            yellow_mask = (r > b * 1.2) & (g > b * 1.2)
+            yellow_ratio = np.mean(yellow_mask)
+            
+            # Combined score: variance matters, but color is a stronger indicator of health
+            # Low variance + Green = Very Healthy.
+            # High variance + Green = Healthy (detailed veins).
+            # High variance + Brown/Yellow = Diseased.
+            
+            color_risk = (brown_ratio * 200) + (yellow_ratio * 150)
+            texture_risk = (variance / 80)
+            
+            # If it's mostly green, suppress the texture risk
+            green_dominance = np.mean((g > r * 1.1) & (g > b * 1.1))
+            if green_dominance > 0.6:
+                texture_risk *= 0.5
+                color_risk *= 0.5
+
+            total_risk = min(color_risk + texture_risk, 100)
+            return float(total_risk)
+    except Exception as e:
+        print(f"Heuristic failed: {e}")
+        return 15.0
 
 
 def _is_leaf_like_image(image_path: str) -> tuple[bool, str]:
@@ -200,9 +232,11 @@ def _load_disease_model():
 
     if _pt_model is None:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        model_path = Path(__file__).resolve().parents[2] / "disese dtection" / "best_model.pth"
+        model_path = Path(__file__).resolve().parents[2] / "disease_detection_src" / "best_model.pth"
         if model_path.exists():
             _pt_model, _pt_transform, _pt_idx_to_class = pt_predict.load_checkpoint(str(model_path), device)
+        else:
+            print(f"DEBUG: Model file not found at {model_path}")
 
     return _pt_model, _pt_transform, _pt_idx_to_class
 
