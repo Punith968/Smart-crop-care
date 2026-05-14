@@ -17,7 +17,7 @@ FERTILIZER_MODELS_DIR = MODELS_DIR / "fertilizers"
 COST_MODELS_DIR = MODELS_DIR / "cost_estimation"
 DISEASE_MODELS_DIR = MODELS_DIR / "diseases_detection"
 
-CROP_DATASET_PATH = CROP_MODELS_DIR / "crop_recommendation.csv"
+CROP_DATASET_PATH = CROP_MODELS_DIR / "crop_recommendation_reference.csv"
 CROP_REFERENCE_DATASET_PATH = CROP_MODELS_DIR / "crop_recommendation_reference.csv"
 FERTILIZER_DATASET_PATH = FERTILIZER_MODELS_DIR / "fertilizer_recommendation.csv"
 FERTILIZER_REFERENCE_DATASET_PATH = FERTILIZER_MODELS_DIR / "fertilizer_reference_raw.csv"

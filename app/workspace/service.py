@@ -6,7 +6,7 @@ from pathlib import Path
 from uuid import uuid4
 
 from app.crop_recommendation.schema import CropRequest
-from app.crop_recommendation.service import predict_crop
+from app.crop_recommendation.service import predict_crop, predict_top_crops
 from app.diseases_detection.schema import DiseaseRequest
 from app.diseases_detection.service import detect_disease
 from app.fertilizers.schema import FertilizerRequest
@@ -18,17 +18,19 @@ from app.workspace.schema import AdvisoryWorkspaceRequest, DiseaseWorkspaceReque
 
 
 def run_advisory_workspace(payload: AdvisoryWorkspaceRequest) -> dict[str, object]:
-    crop = predict_crop(
-        CropRequest(
-            N=payload.N,
-            P=payload.P,
-            K=payload.K,
-            temperature=payload.temperature,
-            humidity=payload.humidity,
-            ph=payload.ph,
-            rainfall=payload.rainfall,
-        )
+    crop_request = CropRequest(
+        N=payload.N,
+        P=payload.P,
+        K=payload.K,
+        temperature=payload.temperature,
+        humidity=payload.humidity,
+        ph=payload.ph,
+        rainfall=payload.rainfall,
+        soil_type=payload.soil_type,
     )
+    
+    crop = predict_crop(crop_request)
+    top_crops = predict_top_crops(crop_request, top_n=4)
 
     fertilizer = predict_fertilizer(
         FertilizerRequest(
@@ -51,6 +53,9 @@ def run_advisory_workspace(payload: AdvisoryWorkspaceRequest) -> dict[str, objec
         )
     )
 
+    # Heuristic for readiness based on humidity and moisture
+    readiness = int(min(max(payload.humidity * 0.6 + payload.moisture * 0.4, 20), 98))
+
     summary = {
         "headline": (
             f"{crop['recommended_crop'].title()} is the strongest crop match for the current field, "
@@ -60,10 +65,12 @@ def run_advisory_workspace(payload: AdvisoryWorkspaceRequest) -> dict[str, objec
             f"Expected profit is approximately Rs. {price['expected_profit']:.2f} "
             f"from {payload.acres:.2f} acres."
         ),
+        "readiness": readiness,
     }
 
     return {
         "crop": crop,
+        "top_crops": top_crops["top_crops"],
         "fertilizer": fertilizer,
         "price": price,
         "summary": summary,

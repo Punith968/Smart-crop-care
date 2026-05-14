@@ -1,79 +1,113 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 :root {
-  --primary: #10b981;
-  --primary-hover: #059669;
-  --bg-sage: #f0fdf4;
-  --border-gray: #e5e7eb;
+  --green: #16a34a; --green-light: #f0fdf4; --green-border: #dcfce7; --green-dark: #15803d;
+  --amber: #d97706; --amber-light: #fffbeb; --amber-border: #fde68a;
+  --red: #ef4444; --red-light: #fef2f2; --red-border: #fecaca;
+  --blue: #3b82f6;
+  --bg: #f8fafc; --card: #ffffff;
+  --text: #0f172a; --text-secondary: #64748b; --text-muted: #94a3b8;
+  --border: #f1f5f9; --border-strong: #e2e8f0;
+  --radius: 14px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.04);
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --bottom-nav-h: 60px;
+  --header-h: 52px;
 }
 
-body {
-  margin: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #f9fafb;
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-family: var(--font); -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
+body { background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; overscroll-behavior-y: none; }
+input, button, textarea, select { font-family: inherit; }
+
+/* ── Mobile-first shell ── */
+.shell { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; }
+
+.mobile-header {
+  position: sticky; top: 0; z-index: 100; height: var(--header-h);
+  padding: 0 16px; padding-top: var(--safe-top);
+  background: rgba(255,255,255,0.92); -webkit-backdrop-filter: saturate(180%) blur(16px); backdrop-filter: saturate(180%) blur(16px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
 }
 
-/* Ant Design Overrides for Agriculture Theme */
-.ant-layout {
-  background: transparent !important;
+.page-scroll {
+  flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  padding: 16px; padding-bottom: calc(var(--bottom-nav-h) + var(--safe-bottom) + 16px);
 }
 
-.ant-layout-sider {
-  background: #ffffff !important;
-  border-right: 1px solid var(--border-gray);
+.bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+  height: calc(var(--bottom-nav-h) + var(--safe-bottom));
+  padding-bottom: var(--safe-bottom);
+  background: rgba(255,255,255,0.94); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px);
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center;
+}
+.nav-btn {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 2px; height: var(--bottom-nav-h); border: none; background: none; cursor: pointer;
+  color: var(--text-muted); font-size: 10px; font-weight: 600; transition: color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.nav-btn.active { color: var(--green); }
+.nav-btn .icon-wrap {
+  width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+.nav-btn.active .icon-wrap { background: var(--green-light); }
+
+/* ── Desktop sidebar & topbar (hidden on mobile) ── */
+.desktop-sidebar, .desktop-topbar { display: none; }
+
+@media (min-width: 1024px) {
+  .mobile-header { display: none; }
+  .bottom-nav { display: none; }
+  .desktop-sidebar {
+    display: flex; flex-direction: column; position: fixed; left: 0; top: 0; bottom: 0;
+    width: 240px; background: white; border-right: 1px solid var(--border); z-index: 50;
+  }
+  .desktop-topbar {
+    display: flex; position: fixed; top: 0; left: 240px; right: 0; height: 56px; z-index: 40;
+    background: rgba(255,255,255,0.88); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border); padding: 0 24px;
+    align-items: center; justify-content: space-between;
+  }
+  .page-scroll {
+    margin-left: 240px; padding: 24px 32px; padding-top: calc(56px + 24px);
+    padding-bottom: 40px; max-width: calc(240px + 800px); /* sidebar + content */
+  }
 }
 
-.ant-menu {
-  border-inline-end: none !important;
-}
+/* ── Ant Design overrides (minimal, mobile-optimised) ── */
+.ant-menu-inline { border-inline-end: none !important; }
+.ant-menu-item { margin: 2px 8px !important; border-radius: 10px !important; height: 42px !important; line-height: 42px !important; font-weight: 600 !important; font-size: 13px !important; }
+.ant-menu-item-selected { background: var(--green-light) !important; color: var(--green) !important; }
+.ant-input, .ant-input-number { border-radius: 10px !important; border-color: var(--border-strong) !important; font-size: 15px !important; }
+.ant-input:focus, .ant-input-number:focus, .ant-input-number-focused { border-color: var(--green) !important; box-shadow: 0 0 0 3px rgba(22,163,74,0.1) !important; }
+.ant-input-number { width: 100% !important; }
+.ant-input-number-input { font-weight: 600 !important; }
+.ant-btn { border-radius: 12px !important; font-weight: 600 !important; }
+.ant-btn-primary { box-shadow: none !important; }
+.ant-slider-rail { background: var(--border-strong) !important; height: 6px !important; border-radius: 3px !important; }
+.ant-slider-track { height: 6px !important; border-radius: 3px !important; background: var(--green) !important; }
+.ant-slider-handle { width: 24px !important; height: 24px !important; inset-block-start: -5px !important; border: 3px solid var(--green) !important; }
+.ant-form-item { margin-bottom: 0 !important; }
+.ant-progress-circle .ant-progress-text { font-weight: 800 !important; }
 
-.ant-menu-item-selected {
-  background-color: var(--bg-sage) !important;
-  color: var(--primary-hover) !important;
-}
+/* ── Utility ── */
+.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); }
+.section-label { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.fade-in { animation: fadeUp 0.25s ease-out; }
 
-.ant-menu-item:hover {
-  color: var(--primary-hover) !important;
-}
-
-.ant-btn-primary {
-  background-color: var(--primary) !important;
-  border-color: var(--primary) !important;
-}
-
-.ant-btn-primary:hover {
-  background-color: var(--primary-hover) !important;
-  border-color: var(--primary-hover) !important;
-}
-
-.ant-card {
-  border-radius: 12px !important;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
-  border: 1px solid var(--border-gray) !important;
-}
-
-.ant-upload-drag {
-  background: white !important;
-  border-radius: 12px !important;
-}
-
-.ant-steps .ant-steps-item-process .ant-steps-item-icon {
-  background-color: var(--primary) !important;
-  border-color: var(--primary) !important;
-}
-
-.ant-steps .ant-steps-item-finish .ant-steps-item-icon {
-  border-color: var(--primary) !important;
-}
-
-.ant-steps .ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon {
-  color: var(--primary) !important;
-}
-
-.ant-steps .ant-steps-item-finish > .ant-steps-item-container > .ant-steps-item-tail::after {
-  background-color: var(--primary) !important;
+/* ── Scrollbar (desktop) ── */
+@media (min-width: 1024px) {
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
 }

@@ -9,6 +9,7 @@ class CropRequest(BaseModel):
     humidity: float = Field(..., description="Relative humidity")
     ph: float = Field(..., description="Soil pH")
     rainfall: float = Field(..., description="Rainfall in mm")
+    soil_type: str = Field(..., description="Soil type")
 
 
 class CropResponse(BaseModel):
