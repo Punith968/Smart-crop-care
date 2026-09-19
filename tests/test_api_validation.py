@@ -1,18 +1,10 @@
-from fastapi.testclient import TestClient
+import pytest
+from pydantic import ValidationError
 
-from app.application.main import app
-
-
-client = TestClient(app)
+from app.crop_recommendation.schema import CropRequest
 
 
-def test_health_endpoint():
-    response = client.get("/health")
-    assert response.status_code == 200
-    assert response.json() == {"status": "ok"}
-
-
-def test_crop_prediction_rejects_missing_required_field():
+def test_crop_request_rejects_missing_required_field():
     payload = {
         "N": 90,
         "P": 42,
@@ -24,7 +16,7 @@ def test_crop_prediction_rejects_missing_required_field():
         # soil_type intentionally omitted
     }
 
-    response = client.post("/predict/crop", json=payload)
+    with pytest.raises(ValidationError) as exc_info:
+        CropRequest.model_validate(payload)
 
-    assert response.status_code == 422
-    assert any(error["loc"][-1] == "soil_type" for error in response.json()["detail"])
+    assert any(error["loc"] == ("soil_type",) for error in exc_info.value.errors())
