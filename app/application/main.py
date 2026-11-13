@@ -41,19 +41,6 @@ async def global_exception_handler(request, exc):
         status_code=500
     )
 
-# SPA Routing and Static Asset Serving
-@app.get("/", include_in_schema=False)
-def index():
-    return FileResponse(WEB_STATIC_DIR / "index.html")
-
-@app.get("/{full_path:path}", include_in_schema=False)
-def catch_all(full_path: str):
-    file_path = WEB_STATIC_DIR / full_path
-    if file_path.is_file():
-        return FileResponse(file_path)
-    return FileResponse(WEB_STATIC_DIR / "index.html")
-
-
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "ok"}
@@ -162,3 +149,22 @@ def reports_download_all(current_user: dict[str, str] = Depends(get_current_user
     zip_bytes = build_reports_bundle(current_user["username"])
     headers = {"Content-Disposition": 'attachment; filename="reports-bundle.zip"'}
     return Response(content=zip_bytes, media_type="application/zip", headers=headers)
+
+
+# SPA routing and static asset serving. These must be registered LAST:
+# FastAPI matches routes in order, and a catch-all registered earlier would
+# answer GET /health, /auth/me, /reports, ... with index.html.
+_STATIC_ROOT = WEB_STATIC_DIR.resolve()
+
+
+@app.get("/", include_in_schema=False)
+def index():
+    return FileResponse(_STATIC_ROOT / "index.html")
+
+
+@app.get("/{full_path:path}", include_in_schema=False)
+def catch_all(full_path: str):
+    file_path = (_STATIC_ROOT / full_path).resolve()
+    if file_path.is_relative_to(_STATIC_ROOT) and file_path.is_file():
+        return FileResponse(file_path)
+    return FileResponse(_STATIC_ROOT / "index.html")

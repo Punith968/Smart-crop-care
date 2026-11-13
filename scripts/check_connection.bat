@@ -63,7 +63,7 @@ goto :end_success
 :end_error
 echo.
 echo [✗] Connection test FAILED
-echo Check DEBUG_GUIDE.md for detailed troubleshooting steps
+echo Check docs\DEBUG_GUIDE.md for detailed troubleshooting steps
 pause
 exit /b 1
 
