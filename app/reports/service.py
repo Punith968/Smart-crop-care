@@ -49,7 +49,12 @@ def _user_dir(username: str) -> Path:
     return path
 
 
+_REPORT_ID_RE = re.compile(r"[a-f0-9]{12}")
+
+
 def _report_paths(username: str, report_id: str) -> tuple[Path, Path, Path]:
+    if not _REPORT_ID_RE.fullmatch(report_id):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Report not found.")
     base_dir = _user_dir(username)
     return (
         base_dir / f"{report_id}.json",

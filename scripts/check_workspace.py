@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 
 # Add project root to path
-sys.path.append(str(Path(__file__).resolve().parents[3]))
+sys.path.append(str(Path(__file__).resolve().parents[1]))
 
 from app.workspace.service import run_advisory_workspace
 from app.workspace.schema import AdvisoryWorkspaceRequest
