@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
@@ -5,7 +6,9 @@ APP_DIR = ROOT_DIR / "app"
 ARTIFACTS_DIR = APP_DIR / "artifacts"
 WEB_DIR = APP_DIR / "web"
 WEB_STATIC_DIR = WEB_DIR / "static"
-STORAGE_DIR = APP_DIR / "storage"
+# Runtime data (users, sessions, reports, uploads). Override with
+# SMART_CROP_STORAGE_DIR, e.g. for tests or a mounted Docker volume.
+STORAGE_DIR = Path(os.environ.get("SMART_CROP_STORAGE_DIR", APP_DIR / "storage"))
 REPORTS_DIR = STORAGE_DIR / "reports"
 UPLOADS_DIR = STORAGE_DIR / "uploads"
 USERS_DB_PATH = STORAGE_DIR / "users.json"

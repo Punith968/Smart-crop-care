@@ -1,17 +1,18 @@
-pandas==2.2.2
-numpy==1.26.4
-matplotlib==3.8.4
-seaborn==0.13.2
-pandas==2.2.2
-numpy==1.26.4
-matplotlib==3.8.4
-seaborn==0.13.2
-scikit-learn==1.4.2
-joblib==1.4.2
+# Core API and classical ML (crop, fertilizer, cost models)
 fastapi==0.115.0
 uvicorn==0.30.6
 pydantic==2.9.2
-Pillow==10.4.0
 python-multipart==0.0.9
+pandas==2.2.2
+numpy==1.26.4
+scikit-learn==1.4.2
+joblib==1.4.2
+matplotlib==3.8.4
+seaborn==0.13.2
+Pillow==10.4.0
 reportlab==4.2.2
 opencv-python-headless
+
+# Optional: PyTorch disease classifier. Without it the API uses the
+# image-heuristic fallback. Install with:
+#   pip install -r disease_detection_src/requirements.txt

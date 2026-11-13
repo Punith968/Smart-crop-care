@@ -1,13 +1,19 @@
 from typing import Dict, Any
 import json
 import sys
-import torch
 from pathlib import Path
 from PIL import Image, ImageStat
 import numpy as np
 
 from app.diseases_detection.schema import DiseaseRequest
 from app.shared.paths import DISEASE_LABELS_PATH, DISEASE_MODEL_PATH
+
+# PyTorch is optional: without it (or without a trained checkpoint) the API
+# still runs and disease detection uses the image-heuristic fallback.
+try:
+    import torch
+except ImportError:
+    torch = None
 
 sys.path.append(str(Path(__file__).resolve().parents[2] / "disease_detection_src"))
 try:
@@ -227,7 +233,7 @@ def _heuristic_leaf_result(crop_name: str, image_path: str) -> Dict[str, str | f
 
 def _load_disease_model():
     global _pt_model, _pt_transform, _pt_idx_to_class
-    if pt_predict is None:
+    if pt_predict is None or torch is None:
         return None, None, None
 
     if _pt_model is None:

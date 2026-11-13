@@ -50,3 +50,5 @@ flutter_verbose_debug.txt
 
 # macOS
 .DS_Store
+# Runtime data (users, sessions, generated reports, uploads)
+app/storage/
